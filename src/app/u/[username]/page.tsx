@@ -68,76 +68,92 @@ export default function SendMessage() {
   };
 
   return (
-    <div className="container mx-auto my-8 p-6 bg-white rounded max-w-4xl">
-      <h1 className="text-4xl font-bold mb-6 text-center">
-        Public Profile Link
-      </h1>
-
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <FormField
-            control={form.control}
-            name="content"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Send Anonymous Message to @{username}</FormLabel>
-                <FormControl>
-                  <Textarea
-                    placeholder="Write your anonymous message here"
-                    className="resize-none"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <div className="flex justify-center">
-            {isLoading ? (
-              <Button disabled>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Please wait
-              </Button>
-            ) : (
-              <Button type="submit" disabled={isLoading || !messageContent}>
-                Send It
-              </Button>
-            )}
-          </div>
-        </form>
-      </Form>
-
-      <div className="space-y-4 my-8">
-        <div className="space-y-2">
-          <p>Click on any message below to select it.</p>
+    <div className="container mx-auto max-w-4xl px-4 py-10">
+      <div className="rounded-3xl border bg-card/80 p-6 shadow-lg backdrop-blur sm:p-10">
+        <div className="mb-8 space-y-2 text-center">
+          <p className="mx-auto w-fit rounded-full border bg-background/60 px-3 py-1 text-xs font-medium text-muted-foreground">
+            Anonymous • Private • Fast
+          </p>
+          <h1 className="text-balance text-3xl font-bold tracking-tight sm:text-4xl">
+            Send an anonymous message
+          </h1>
+          <p className="text-sm text-muted-foreground">
+            Your message will be delivered to <span className="font-medium">@{username}</span>.
+          </p>
         </div>
 
-        <Card>
-          <CardHeader>
-            <h3 className="text-xl font-semibold">Messages</h3>
-          </CardHeader>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <FormField
+              control={form.control}
+              name="content"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-sm">Message</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder="Write something kind, curious, or fun…"
+                      className="min-h-32 resize-none rounded-xl border-border/60 bg-background/60 shadow-sm focus-visible:ring-2 focus-visible:ring-ring"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div className="flex justify-center">
+              {isLoading ? (
+                <Button disabled className="min-w-40">
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Sending…
+                </Button>
+              ) : (
+                <Button type="submit" disabled={isLoading || !messageContent} className="min-w-40">
+                  Send message
+                </Button>
+              )}
+            </div>
+          </form>
+        </Form>
 
-          <CardContent className="grid gap-3 sm:grid-cols-2">
-            {suggestedMessages.map((msg, idx) => (
-              <button
-                key={`${idx}-${msg}`}
-                type="button"
-                onClick={() => handleMessageClick(msg)}
-                className="text-left rounded-md border p-3 hover:bg-muted transition-colors"
-              >
-                <p className="text-sm">{msg}</p>
-              </button>
-            ))}
-          </CardContent>
-        </Card>
-      </div>
+        <div className="mt-10 space-y-4">
+          <div className="space-y-1">
+            <p className="text-sm font-medium">Need inspiration?</p>
+            <p className="text-sm text-muted-foreground">Tap a prompt to autofill your message.</p>
+          </div>
 
-      <Separator className="my-6" />
-      <div className="text-center">
-        <div className="mb-4">Get Your Message Board</div>
-        <Link href={'/sign-up'}>
-          <Button>Create Your Account</Button>
-        </Link>
+          <Card>
+            <CardHeader className="pb-2">
+              <h3 className="text-base font-semibold">Suggested prompts</h3>
+            </CardHeader>
+
+            <CardContent className="grid gap-3 sm:grid-cols-2">
+              {suggestedMessages.map((msg, idx) => (
+                <button
+                  key={`${idx}-${msg}`}
+                  type="button"
+                  onClick={() => handleMessageClick(msg)}
+                  className="group text-left rounded-xl border border-border/60 bg-background/50 p-4 shadow-sm transition
+                             hover:-translate-y-0.5 hover:bg-muted/40 hover:shadow-md
+                             focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                >
+                  <p className="text-sm leading-relaxed">{msg}</p>
+                  <p className="mt-2 text-xs text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100">
+                    Click to use
+                  </p>
+                </button>
+              ))}
+            </CardContent>
+          </Card>
+        </div>
+
+        <Separator className="my-10" />
+        <div className="text-center">
+          <div className="mb-4 text-sm text-muted-foreground">Want your own message board?</div>
+          <Link href={'/sign-up'}>
+            <Button size="lg" className="px-8">Create your account</Button>
+          </Link>
+        </div>
       </div>
     </div>
   );

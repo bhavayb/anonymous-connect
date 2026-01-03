@@ -40,31 +40,44 @@ const VerifyAccount = () => {
 
 
     return (
-        <div className='flex justify-center items-center min-h-screen bg-gray-100'>
-            <div className='w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md'>
+        <div className="flex min-h-screen items-center justify-center px-4 py-10">
+            <div className="w-full max-w-md rounded-3xl border bg-card/80 p-8 shadow-xl backdrop-blur">
                 <div className="text-center">
-                    <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6">
-                        Verify Your Account
+                    <p className="mx-auto mb-4 w-fit rounded-full border bg-background/60 px-3 py-1 text-xs font-medium text-muted-foreground">
+                        Email verification
+                    </p>
+                    <h1 className="text-balance text-3xl font-bold tracking-tight sm:text-4xl mb-3">
+                        Verify your account
                     </h1>
-                    <p className="mb-4">Enter the verification code sent to your email to continue your secret conversations</p>
+                    <p className="mb-8 text-sm text-muted-foreground">
+                        Enter the 6-digit code sent to your email to continue.
+                    </p>
                 </div>
+
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                         <FormField
                             name="code"
                             control={form.control}
-                            
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Verification Code</FormLabel>
+                                    <FormLabel className="text-sm">Verification code</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="code" {...field} />
+                                        <Input
+                                            placeholder="123456"
+                                            className="h-11 rounded-xl border-border/60 bg-background/60 shadow-sm focus-visible:ring-2 focus-visible:ring-ring"
+                                            inputMode="numeric"
+                                            autoComplete="one-time-code"
+                                            {...field}
+                                        />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
-                        <Button type="submit">Submit</Button>
+                        <Button type="submit" className="h-11 w-full rounded-xl">
+                            Submit
+                        </Button>
                     </form>
                 </Form>
             </div>

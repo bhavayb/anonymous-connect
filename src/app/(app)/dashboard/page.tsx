@@ -111,61 +111,89 @@ const Page = () => {
 console.log('Messages in render:', messages);
 
    return (
-    <div className="my-8 mx-4 md:mx-8 lg:mx-auto p-6 bg-white rounded w-full max-w-6xl">
-      <h1 className="text-4xl font-bold mb-4">User Dashboard</h1>
+    <div className="container mx-auto max-w-6xl px-4 py-10">
+      <div className="rounded-3xl border bg-card/80 p-6 shadow-lg backdrop-blur sm:p-10">
+        <div className="mb-8 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="mb-2 w-fit rounded-full border bg-background/60 px-3 py-1 text-xs font-medium text-muted-foreground">
+              Dashboard
+            </p>
+            <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">User dashboard</h1>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Share your link and manage incoming messages.
+            </p>
+          </div>
 
-      <div className="mb-4">
-        <h2 className="text-lg font-semibold mb-2">Copy Your Unique Link</h2>{' '}
-        <div className="flex items-center">
-          <input
-            type="text"
-            value={profileUrl}
-            disabled
-            className="input input-bordered w-full p-2 mr-2"
-          />
-          <Button onClick={copyToClipboard}>Copy</Button>
+          <Button
+            variant="outline"
+            onClick={(e) => {
+              e.preventDefault();
+              fetchMessages(true);
+            }}
+            className="h-10 gap-2 self-start sm:self-auto"
+          >
+            {isLoading ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <RefreshCcw className="h-4 w-4" />
+            )}
+            Refresh
+          </Button>
         </div>
-      </div>
 
-      <div className="mb-4">
-        <Switch
-          {...register('acceptMessages')}
-          checked={acceptMessages}
-          onCheckedChange={handleSwitchChange}
-          disabled={isSwitchLoading}
-        />
-        <span className="ml-2">
-          Accept Messages: {acceptMessages ? 'On' : 'Off'}
-        </span>
-      </div>
-      <Separator />
-
-      <Button
-        className="mt-4"
-        variant="outline"
-        onClick={(e) => {
-          e.preventDefault();
-          fetchMessages(true);
-        }}
-      >
-        {isLoading ? (
-          <Loader2 className="h-4 w-4 animate-spin" />
-        ) : (
-          <RefreshCcw className="h-4 w-4" />
-        )}
-      </Button>
-      <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6">
-        {messages.length > 0 ? (
-          messages.map((message, index) => (
-            <MessageCard
-              key={String(message._id)}
-              message={message}
-              onMessageDelete={handleDeleteMessage}
+        <div className="mb-8 space-y-3">
+          <h2 className="text-sm font-semibold">Your unique link</h2>
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+            <input
+              type="text"
+              value={profileUrl}
+              disabled
+              className="h-11 w-full rounded-xl border border-border/60 bg-background/60 px-3 text-sm shadow-sm
+                         focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-80"
             />
-          ))
-        ) : (
-          <p>No messages to display.</p>
-        )}
+            <Button onClick={copyToClipboard} className="h-11 rounded-xl sm:w-auto">
+              Copy link
+            </Button>
+          </div>
+        </div>
+
+        <div className="mb-6 flex items-center justify-between rounded-2xl border border-border/60 bg-background/40 p-4">
+          <div className="space-y-1">
+            <p className="text-sm font-medium">Accept messages</p>
+            <p className="text-xs text-muted-foreground">
+              Turn off to temporarily pause new messages.
+            </p>
+          </div>
+          <div className="flex items-center gap-3">
+            <Switch
+              {...register('acceptMessages')}
+              checked={acceptMessages}
+              onCheckedChange={handleSwitchChange}
+              disabled={isSwitchLoading}
+            />
+            <span className="text-sm text-muted-foreground">
+              {acceptMessages ? 'On' : 'Off'}
+            </span>
+          </div>
+        </div>
+
+        <Separator className="my-8" />
+
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+          {messages.length > 0 ? (
+            messages.map((message) => (
+              <MessageCard
+                key={String(message._id)}
+                message={message}
+                onMessageDelete={handleDeleteMessage}
+              />
+            ))
+          ) : (
+            <div className="rounded-2xl border border-dashed border-border/70 bg-background/30 p-8 text-center">
+              <p className="text-sm text-muted-foreground">No messages to display.</p>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
