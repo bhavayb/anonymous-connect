@@ -12,7 +12,7 @@ const MessageSchema: Schema<Message> = new Schema({
   },
   createdAt: {
     type: Date,
-    required: true,
+    required: false,
     default: Date.now,
   },
 });
